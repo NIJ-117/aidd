@@ -2,11 +2,11 @@
 
 docker run \
        -it --rm \
-       -v `pwd`:/aider \
+       -v `pwd`:/hclcode \
        -v `pwd`/tmp.benchmarks/.:/benchmarks \
        -e OPENAI_API_KEY=$OPENAI_API_KEY \
-       -e HISTFILE=/aider/.bash_history \
-       -e AIDER_DOCKER=1 \
-       -e AIDER_BENCHMARK_DIR=/benchmarks \
-       aider-benchmark \
+       -e HISTFILE=/hclcode/.bash_history \
+       -e hclcode_DOCKER=1 \
+       -e hclcode_BENCHMARK_DIR=/benchmarks \
+       hclcode-benchmark \
        bash

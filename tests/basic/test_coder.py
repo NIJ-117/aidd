@@ -6,12 +6,12 @@ from unittest.mock import MagicMock, patch
 
 import git
 
-from aider.coders import Coder
-from aider.dump import dump  # noqa: F401
-from aider.io import InputOutput
-from aider.models import Model
-from aider.repo import GitRepo
-from aider.utils import GitTemporaryDirectory
+from hclcode.coders import Coder
+from hclcode.dump import dump  # noqa: F401
+from hclcode.io import InputOutput
+from hclcode.models import Model
+from hclcode.repo import GitRepo
+from hclcode.utils import GitTemporaryDirectory
 
 
 class TestCoder(unittest.TestCase):
@@ -640,7 +640,7 @@ two
             diff = saved_diffs[0]
             self.assertIn("file.txt", diff)
 
-    def test_skip_aiderignored_files(self):
+    def test_skip_hclcodeignored_files(self):
         with GitTemporaryDirectory():
             repo = git.Repo()
 
@@ -656,13 +656,13 @@ two
 
             fnames = [fname1, fname2, fname3]
 
-            aignore = Path(".aiderignore")
+            aignore = Path(".hclcodeignore")
             aignore.write_text(f"{fname1}\n{fname2}\ndir\n")
             repo = GitRepo(
                 io,
                 fnames,
                 None,
-                aider_ignore_file=str(aignore),
+                hclcode_ignore_file=str(aignore),
             )
 
             coder = Coder.create(

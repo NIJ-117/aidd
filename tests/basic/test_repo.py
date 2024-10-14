@@ -8,11 +8,11 @@ from unittest.mock import patch
 
 import git
 
-from aider.dump import dump  # noqa: F401
-from aider.io import InputOutput
-from aider.models import Model
-from aider.repo import GitRepo
-from aider.utils import GitTemporaryDirectory
+from hclcode.dump import dump  # noqa: F401
+from hclcode.io import InputOutput
+from hclcode.models import Model
+from hclcode.repo import GitRepo
+from hclcode.utils import GitTemporaryDirectory
 
 
 class TestRepo(unittest.TestCase):
@@ -106,7 +106,7 @@ class TestRepo(unittest.TestCase):
             diffs = git_repo.diff_commits(False, "HEAD~1", "HEAD")
             self.assertIn("two", diffs)
 
-    @patch("aider.repo.simple_send_with_retries")
+    @patch("hclcode.repo.simple_send_with_retries")
     def test_get_commit_message(self, mock_send):
         mock_send.side_effect = ["", "a good commit message"]
 
@@ -135,7 +135,7 @@ class TestRepo(unittest.TestCase):
         # Optionally, you can still dump the call args if needed for debugging
         dump(mock_send.call_args_list)
 
-    @patch("aider.repo.simple_send_with_retries")
+    @patch("hclcode.repo.simple_send_with_retries")
     def test_get_commit_message_strip_quotes(self, mock_send):
         mock_send.return_value = '"a good commit message"'
 
@@ -146,7 +146,7 @@ class TestRepo(unittest.TestCase):
         # Assert that the returned message is the expected one
         self.assertEqual(result, "a good commit message")
 
-    @patch("aider.repo.simple_send_with_retries")
+    @patch("hclcode.repo.simple_send_with_retries")
     def test_get_commit_message_no_strip_unmatched_quotes(self, mock_send):
         mock_send.return_value = 'a good "commit message"'
 
@@ -157,7 +157,7 @@ class TestRepo(unittest.TestCase):
         # Assert that the returned message is the expected one
         self.assertEqual(result, 'a good "commit message"')
 
-    @patch("aider.repo.simple_send_with_retries")
+    @patch("hclcode.repo.simple_send_with_retries")
     def test_get_commit_message_with_custom_prompt(self, mock_send):
         mock_send.return_value = "Custom commit message"
         custom_prompt = "Generate a commit message in the style of Shakespeare"
@@ -170,7 +170,7 @@ class TestRepo(unittest.TestCase):
         args, _ = mock_send.call_args
         self.assertEqual(args[1][0]["content"], custom_prompt)
 
-    @patch("aider.repo.GitRepo.get_commit_message")
+    @patch("hclcode.repo.GitRepo.get_commit_message")
     def test_commit_with_custom_committer_name(self, mock_send):
         mock_send.return_value = '"a good commit message"'
 
@@ -194,21 +194,21 @@ class TestRepo(unittest.TestCase):
 
             # commit a change
             fname.write_text("new content")
-            git_repo.commit(fnames=[str(fname)], aider_edits=True)
+            git_repo.commit(fnames=[str(fname)], hclcode_edits=True)
 
             # check the committer name
             commit = raw_repo.head.commit
-            self.assertEqual(commit.author.name, "Test User (aider)")
-            self.assertEqual(commit.committer.name, "Test User (aider)")
+            self.assertEqual(commit.author.name, "Test User (hclcode)")
+            self.assertEqual(commit.committer.name, "Test User (hclcode)")
 
-            # commit a change without aider_edits
+            # commit a change without hclcode_edits
             fname.write_text("new content again!")
-            git_repo.commit(fnames=[str(fname)], aider_edits=False)
+            git_repo.commit(fnames=[str(fname)], hclcode_edits=False)
 
             # check the committer name
             commit = raw_repo.head.commit
             self.assertEqual(commit.author.name, "Test User")
-            self.assertEqual(commit.committer.name, "Test User (aider)")
+            self.assertEqual(commit.committer.name, "Test User (hclcode)")
 
             # check that the original committer name is restored
             original_committer_name = os.environ.get("GIT_COMMITTER_NAME")
@@ -283,7 +283,7 @@ class TestRepo(unittest.TestCase):
             self.assertIn(str(fname), fnames)
             self.assertIn(str(fname2), fnames)
 
-    def test_get_tracked_files_with_aiderignore(self):
+    def test_get_tracked_files_with_hclcodeignore(self):
         with GitTemporaryDirectory():
             # new repo
             raw_repo = git.Repo()
@@ -293,8 +293,8 @@ class TestRepo(unittest.TestCase):
             fname.touch()
             raw_repo.git.add(str(fname))
 
-            aiderignore = Path(".aiderignore")
-            git_repo = GitRepo(InputOutput(), None, None, str(aiderignore))
+            hclcodeignore = Path(".hclcodeignore")
+            git_repo = GitRepo(InputOutput(), None, None, str(hclcodeignore))
 
             # better be there
             fnames = git_repo.get_tracked_files()
@@ -315,7 +315,7 @@ class TestRepo(unittest.TestCase):
             self.assertIn(str(fname), fnames)
             self.assertIn(str(fname2), fnames)
 
-            aiderignore.write_text("new.txt\n")
+            hclcodeignore.write_text("new.txt\n")
             time.sleep(2)
 
             # new.txt should be gone!
@@ -327,7 +327,7 @@ class TestRepo(unittest.TestCase):
             # The mtime doesn't change, even if I time.sleep(1)
             # Before doing this write_text()!?
             #
-            # aiderignore.write_text("new2.txt\n")
+            # hclcodeignore.write_text("new2.txt\n")
             # new2.txt should be gone!
             # fnames = git_repo.get_tracked_files()
             # self.assertIn(str(fname), fnames)
@@ -393,7 +393,7 @@ class TestRepo(unittest.TestCase):
             self.assertNotIn(str(root_file), tracked_files)
             self.assertNotIn(str(another_subdir_file), tracked_files)
 
-    @patch("aider.repo.simple_send_with_retries")
+    @patch("hclcode.repo.simple_send_with_retries")
     def test_noop_commit(self, mock_send):
         mock_send.return_value = '"a good commit message"'
 

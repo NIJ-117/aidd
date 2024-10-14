@@ -21,7 +21,7 @@ def has_been_reopened(issue_number):
 # Load environment variables from .env file
 load_dotenv()
 
-DUPLICATE_COMMENT = """Thanks for trying aider and filing this issue.
+DUPLICATE_COMMENT = """Thanks for trying hclcode and filing this issue.
 
 This looks like a duplicate of #{oldest_issue_number}. Please see the comments there for more information, and feel free to continue the discussion within that issue.
 
@@ -29,8 +29,8 @@ I'm going to close this issue for now. But please let me know if you think this 
 
 # GitHub API configuration
 GITHUB_API_URL = "https://api.github.com"
-REPO_OWNER = "Aider-AI"
-REPO_NAME = "aider"
+REPO_OWNER = "hclcode-AI"
+REPO_NAME = "hclcode"
 TOKEN = os.getenv("GITHUB_TOKEN")
 
 headers = {"Authorization": f"token {TOKEN}", "Accept": "application/vnd.github.v3+json"}

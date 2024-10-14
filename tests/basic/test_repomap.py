@@ -7,11 +7,11 @@ from pathlib import Path
 
 import git
 
-from aider.dump import dump  # noqa: F401
-from aider.io import InputOutput
-from aider.models import Model
-from aider.repomap import RepoMap
-from aider.utils import GitTemporaryDirectory, IgnorantTemporaryDirectory
+from hclcode.dump import dump  # noqa: F401
+from hclcode.io import InputOutput
+from hclcode.models import Model
+from hclcode.repomap import RepoMap
+from hclcode.utils import GitTemporaryDirectory, IgnorantTemporaryDirectory
 
 
 class TestRepoMap(unittest.TestCase):

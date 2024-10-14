@@ -6,7 +6,7 @@ from unittest import mock
 import pytest
 from git import GitError, Repo
 
-from aider.main import sanity_check_repo
+from hclcode.main import sanity_check_repo
 
 
 @pytest.fixture
@@ -116,16 +116,16 @@ def test_git_index_version_greater_than_2(create_repo, mock_io):
 
     # Assert that the appropriate error messages were logged
     mock_io.tool_error.assert_called_with(
-        "Aider only works with git repos with version number 1 or 2."
+        "hclcode only works with git repos with version number 1 or 2."
     )
     mock_io.tool_error.assert_any_call(
-        "Aider only works with git repos with version number 1 or 2."
+        "hclcode only works with git repos with version number 1 or 2."
     )
     mock_io.tool_output.assert_any_call(
         "You may be able to convert your repo: git update-index --index-version=2"
     )
-    mock_io.tool_output.assert_any_call("Or run aider --no-git to proceed without using git.")
-    mock_io.tool_output.assert_any_call("https://github.com/Aider-AI/aider/issues/211")
+    mock_io.tool_output.assert_any_call("Or run hclcode --no-git to proceed without using git.")
+    mock_io.tool_output.assert_any_call("https://github.com/hclcode-AI/hclcode/issues/211")
 
 
 def test_bare_repository(create_repo, mock_io, tmp_path):

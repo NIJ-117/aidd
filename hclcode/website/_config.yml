@@ -1,0 +1,48 @@
+theme: just-the-docs
+url: "https://hclcode.chat"
+
+plugins:
+  - jekyll-redirect-from
+  - jekyll-sitemap
+  - jekyll-feed
+
+defaults:
+  - scope:
+      path: "README.md"
+      type: "pages"
+    values:
+      description: "hclcode is AI pair programming in your terminal"
+
+exclude:
+  - "tmp*"
+  - "**/tmp*"
+  - OLD
+  - "**/OLD/**"
+  - "OLD/**"
+  - vendor
+  - feed.xml
+
+aux_links:
+  "GitHub":
+    - "https://github.com/hclcode-AI/hclcode"
+  "Discord":
+    - "https://discord.gg/Tv2uQnR88V"
+  "Blog":
+    - "/blog/"
+
+nav_external_links:
+  - title: "GitHub"
+    url: "https://github.com/hclcode-AI/hclcode"
+  - title: "Discord"
+    url: "https://discord.gg/Tv2uQnR88V"
+
+repository: hclcode-AI/hclcode
+
+callouts:
+  tip:
+    title: Tip
+    color: green
+  note:
+    title: Note
+    color: yellow
+    

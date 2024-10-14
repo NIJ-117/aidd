@@ -1,12 +1,12 @@
 import unittest
 from unittest.mock import MagicMock
 
-import aider
-from aider.coders import Coder
-from aider.commands import Commands
-from aider.help import Help
-from aider.io import InputOutput
-from aider.models import Model
+import hclcode
+from hclcode.coders import Coder
+from hclcode.commands import Commands
+from hclcode.help import Help
+from hclcode.io import InputOutput
+from hclcode.models import Model
 
 
 class TestHelp(unittest.TestCase):
@@ -20,11 +20,11 @@ class TestHelp(unittest.TestCase):
         commands = Commands(io, coder)
 
         help_coder_run = MagicMock(return_value="")
-        aider.coders.HelpCoder.run = help_coder_run
+        hclcode.coders.HelpCoder.run = help_coder_run
 
         try:
             commands.cmd_help("hi")
-        except aider.commands.SwitchCoder:
+        except hclcode.commands.SwitchCoder:
             pass
         else:
             # If no exception was raised, fail the test
@@ -38,7 +38,7 @@ class TestHelp(unittest.TestCase):
 
     def test_ask_without_mock(self):
         help_instance = Help()
-        question = "What is aider?"
+        question = "What is hclcode?"
         result = help_instance.ask(question)
 
         self.assertIn(f"# Question: {question}", result)
@@ -47,7 +47,7 @@ class TestHelp(unittest.TestCase):
         self.assertGreater(len(result), 100)  # Ensure we got a substantial response
 
         # Check for some expected content (adjust based on your actual help content)
-        self.assertIn("aider", result.lower())
+        self.assertIn("hclcode", result.lower())
         self.assertIn("ai", result.lower())
         self.assertIn("chat", result.lower())
 
